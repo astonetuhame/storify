@@ -9,6 +9,12 @@ use Illuminate\Support\Facades\Gate;
 
 class StoriesController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Story::class, 'story');
+    }
+
+
     /**
      * Display a listing of the resource.
      *
@@ -76,7 +82,7 @@ class StoriesController extends Controller
     public function edit(Story $story)
     {
         // Gate::authorize('edit-story', $story);
-        $this->authorize('update', $story);
+        // $this->authorize('update', $story);
         return view('stories.edit', [
             'story' => $story
         ]);
