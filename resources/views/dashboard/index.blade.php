@@ -1,12 +1,18 @@
 @extends('layouts.app')
-
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">
-                    HomePage
+                    Homepage
+                    <div class="d-flex justify-content-end">
+                        <a href="{{ route('dashboard.index') }}">All</a>
+                        |
+                        <a href="{{ route('dashboard.index', ['type' => 'short'])  }}">Short</a>
+                        |
+                        <a href="{{ route('dashboard.index', ['type' => 'long']) }}">Long</a>
+                    </div>
                 </div>
 
                 <div class="card-body">
@@ -22,7 +28,9 @@
                             @foreach( $stories as $story)
                             <tr>
                                 <td>
-                                    {{ $story->title }}
+                                    <a href="{{ route('dashboard.show', [$story]) }}">
+                                        {{ $story->title }}
+                                    </a>
                                 </td>
                                 <td>
                                     {{ $story->type}}
@@ -35,10 +43,13 @@
                         </tbody>
                     </table>
 
-                    {{ $stories->links() }}
+                    {{ $stories->withQueryString()->links() }}
                 </div>
             </div>
         </div>
     </div>
 </div>
 @endsection
+
+
+{{-- {{ dd(DB::getQueryLog()) }} --}}
