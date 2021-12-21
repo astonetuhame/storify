@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Story extends Model
 {
+    use HasFactory;
     /**
      * The attributes that are mass assignable.
      *
@@ -20,7 +21,8 @@ class Story extends Model
         'status'
     ];
 
-    public function user(){
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
 }
