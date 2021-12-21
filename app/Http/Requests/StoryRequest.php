@@ -28,6 +28,7 @@ class StoryRequest extends FormRequest
         return [
             'title' => [
                 'required', 'min:10', 'max:50',
+                //fail when user inputs dummy title in input field
                 function ($attribute, $value, $fail) {
                     if ($value == 'Dummy Title') {
                         $fail($attribute . ' is not valid');
