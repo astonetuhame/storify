@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\StoriesController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\DashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,10 +19,12 @@ use App\Http\Controllers\Auth\LoginController;
 
 Auth::routes();
 
-Route::get('/', [LoginController::class, 'showLoginForm']);
+// Route::get('/', [LoginController::class, 'showLoginForm']);
+
+Route::get('/', [DashboardController::class, 'index']);
 
 
-Route::middleware(['auth'])->group( function() {
+Route::middleware(['auth'])->group(function () {
     Route::resource('stories', StoriesController::class);
     // ->name('stories.index');
     // Route::get('/stories/{story}', 'StoriesController@show')->name('stories.show');
