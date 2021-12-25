@@ -1,10 +1,12 @@
 <?php
 
+use App\Http\Middleware\CheckAdmin;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\StoriesController;
-use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Admin\AdminStoriesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,3 +32,11 @@ Route::middleware(['auth'])->group(function () {
     // ->name('stories.index');
     // Route::get('/stories/{story}', 'StoriesController@show')->name('stories.show');
 });
+
+Route::namespace('Admin')->prefix('admin')->middleware(['auth', CheckAdmin::class])->group(
+    function () {
+        Route::get('/deleted-stories', [AdminStoriesController::class, 'index'])->name('admin.stories.index');
+        Route::put('/stories/restore/{id}', [AdminStoriesController::class, 'restore'])->name('admin.stories.restore');
+        Route::delete('/stories/delete/{id}', [AdminStoriesController::class, 'delete'])->name('admin.stories.delete');
+    }
+);
