@@ -50,8 +50,8 @@ class RouteServiceProvider extends ServiceProvider
                 ->group(base_path('routes/web.php'));
         });
 
-        Route::bind('activeStory', function ($id) {
-            return \App\Models\Story::where('id', $id)->where('status', 1)->firstOrFail();
+        Route::bind('activeStory', function ($slug) {
+            return \App\Models\Story::where('slug', $slug)->where('status', 1)->firstOrFail();
         });
     }
 
