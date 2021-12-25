@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\NewStoryNotification;
+use App\Mail\NotifyAdmin;
 use App\Models\Story;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+
 
 class DashboardController extends Controller
 {
@@ -32,5 +36,11 @@ class DashboardController extends Controller
         return view('dashboard.show', [
             'story' => $activeStory
         ]);
+    }
+
+    public function email()
+    {
+        // Mail::send(new NotifyAdmin('Title of the story'));
+        Mail::send(new NewStoryNotification('Title of the story'));
     }
 }

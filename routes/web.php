@@ -23,6 +23,7 @@ Auth::routes();
 
 Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
 Route::get('/dashboard/stories/{activeStory:slug}', [DashboardController::class, 'show'])->name('dashboard.show');
+Route::get('/email', [DashboardController::class, 'email'])->name('dashboard.email');
 
 Route::middleware(['auth'])->group(function () {
     Route::resource('stories', StoriesController::class);
