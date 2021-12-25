@@ -7,10 +7,12 @@ use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Story extends Model
 {
     use HasFactory;
+    use SoftDeletes;
     /**
      * The attributes that are mass assignable.
      *
