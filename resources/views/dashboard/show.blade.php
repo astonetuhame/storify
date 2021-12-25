@@ -13,6 +13,7 @@
 
                 <div class="card-body">
                     {{ $story->body}}
+                    <p class="font-italic">{{ $story->footnote }}</p>
                 </div>
             </div>
         </div>
