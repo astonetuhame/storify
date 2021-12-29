@@ -12,7 +12,7 @@
                 </div>
 
                 <div class="card-body">
-                    <form action="{{ route('stories.update', [$story]) }}" method="POST">
+                    <form action="{{ route('stories.update', [$story]) }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
                         @include('stories.form')

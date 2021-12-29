@@ -52,4 +52,12 @@ class Story extends Model
         $this->attributes['title'] = $value;
         $this->attributes['slug'] = Str::slug($value);
     }
+
+    public function getThumbnailAttribute()
+    {
+        if ($this->image) {
+            return asset('storage/' . $this->image);
+        }
+        return asset('storage/thumbnail.jpg');
+    }
 }
