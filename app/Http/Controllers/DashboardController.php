@@ -21,9 +21,9 @@ class DashboardController extends Controller
         if (in_array($type, ['short', 'long'])) {
             $query->where('type', $type);
         }
-        $stories = $query->with('user')
+        $stories = $query->with('user', 'tags')
             ->orderBy('id', 'DESC')
-            ->paginate(10);
+            ->paginate(12);
 
         return view('dashboard.index', [
             'stories' => $stories
