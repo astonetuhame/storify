@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Tag;
 use App\Models\Story;
 use App\Events\StoryCreated;
 use Illuminate\Http\Request;
@@ -29,6 +30,7 @@ class StoriesController extends Controller
     {
         //
         $stories = Story::where('user_id', auth()->user()->id)
+            ->with('tags')
             ->orderBy('id', 'DESC')
             ->paginate(10);
         return view('stories.index', [
@@ -45,8 +47,11 @@ class StoriesController extends Controller
     {
         //
         $story = new Story;
+        $tags = Tag::get();
+
         return view('stories.create', [
-            'story' => $story
+            'story' => $story,
+            'tags' => $tags
         ]);
     }
 
@@ -58,7 +63,7 @@ class StoriesController extends Controller
      */
     public function store(StoryRequest $request)
     {
-        //
+
         $story = auth()->user()->stories()->create($request->all());
 
         // Mail::send(new NewStoryNotification($story->title));
@@ -69,6 +74,7 @@ class StoriesController extends Controller
             $this->_uploadImage($request, $story);
         }
 
+        $story->tags()->sync($request->tag);
 
         Event(new StoryCreated($story->title));
         return redirect()->route('stories.index')->with('status', 'Story Created Successfully!');
@@ -98,8 +104,10 @@ class StoriesController extends Controller
     {
         // Gate::authorize('edit-story', $story);
         // $this->authorize('update', $story);
+        $tags = Tag::get();
         return view('stories.edit', [
-            'story' => $story
+            'story' => $story,
+            'tags' => $tags
         ]);
     }
 
@@ -118,6 +126,7 @@ class StoriesController extends Controller
             $this->_uploadImage($request, $story);
         }
 
+        $story->tags()->sync($request->tag);
 
         return redirect()->route('stories.index')->with('status', 'Story Updated Successfully!');
     }
