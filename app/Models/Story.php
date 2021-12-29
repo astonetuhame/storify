@@ -60,4 +60,9 @@ class Story extends Model
         }
         return asset('storage/thumbnail.jpg');
     }
+
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class);
+    }
 }
