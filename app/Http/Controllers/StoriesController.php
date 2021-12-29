@@ -10,6 +10,7 @@ use App\Http\Requests\StoryRequest;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Mail;
+use Intervention\Image\Facades\Image;
 
 class StoriesController extends Controller
 {
@@ -29,7 +30,7 @@ class StoriesController extends Controller
         //
         $stories = Story::where('user_id', auth()->user()->id)
             ->orderBy('id', 'DESC')
-            ->paginate(3);
+            ->paginate(10);
         return view('stories.index', [
             'stories' => $stories
         ]);
@@ -63,6 +64,11 @@ class StoriesController extends Controller
         // Mail::send(new NewStoryNotification($story->title));
 
         // Log::info('A story with title' . $story->title . 'was added');
+
+        if ($request->hasFile('image')) {
+            $this->_uploadImage($request, $story);
+        }
+
 
         Event(new StoryCreated($story->title));
         return redirect()->route('stories.index')->with('status', 'Story Created Successfully!');
@@ -108,6 +114,10 @@ class StoriesController extends Controller
     {
         //
         $story->update($request->all());
+        if ($request->hasFile('image')) {
+            $this->_uploadImage($request, $story);
+        }
+
 
         return redirect()->route('stories.index')->with('status', 'Story Updated Successfully!');
     }
@@ -123,5 +133,16 @@ class StoriesController extends Controller
         //
         $story->delete();
         return redirect()->route('stories.index')->with('status', 'Story Deleted Successfully!');
+    }
+
+    private function _uploadImage($request, $story)
+    {
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $filename = time() . '.' . $image->getClientOriginalExtension();
+            Image::make($image)->resize(25, 100)->save(public_path('storage/' . $filename));
+            $story->image = $filename;
+            $story->save();
+        }
     }
 }
